@@ -71,10 +71,14 @@ class User extends BaseUser
 
     /**
      * @param string $firstName
+     *
+     * @return $this
      */
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
+
+        return $this;
     }
 
     /**
@@ -87,10 +91,14 @@ class User extends BaseUser
 
     /**
      * @param string $lastName
+     *
+     * @return $this
      */
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+
+        return $this;
     }
 
     public function getFullName()
