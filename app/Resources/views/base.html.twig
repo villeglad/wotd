@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-uA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{{ content_title|default('Welome!') }}{% endblock %} - WOTD</title>
+        {% block stylesheets %}
+            <link
+                    rel="stylesheet"
+                    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+                    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+                    crossorigin="anonymous"
+            >
+            <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/global.css') }}">
+        {% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-static-top
+            {{ (is_granted('ROLE_PREVIOUS_ADMIN')) ? 'navbar-impersonate' }}" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button
+                        type="button"
+                        class="navbar-toggle collapsed"
+                        data-toggle="collapse"
+                        data-target="#main-navigation"
+                        aria-expanded="false"
+                    >
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ path('homepage') }}">WOTD.fyi</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-navigation">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li {{ (app.request.get('_route') == 'homepage') ? 'class="active"' }}>
+                            <a href="{{ path('homepage') }}">
+                                <span class="fa fa-home fa-fw"></span>
+                                Home
+                            </a>
+                        </li>
+                        {# TODO: Fix this after the vote page is created.
+                        <li {{ (app.request.get('_route') starts with 'vote') ? 'class="active"' }}>
+                            <a href="#">Vote</a>
+                        </li>
+                        #}
+                        <li {{ (app.request.get('_route') == 'about') ? 'class="active"' }}>
+                            <a href="{{ path('about') }}">
+                                <span class="fa fa-book fa-fw"></span>
+                                About
+                            </a>
+                        </li>
+                        {% if not app.user %}
+                            <li {{ (app.request.get('_route') == 'fos_user_security_login') ? 'class="active"' }}>
+                                <a href="{{ path('fos_user_security_login') }}">
+                                    <span class="fa fa-sign-in fa-fw"></span>
+                                    Login
+                                </a>
+                            </li>
+                            <li {{ (app.request.get('_route') starts with 'fos_user_registration') ? 'class="active"' }}>
+                                <a href="{{ path('fos_user_registration_register') }}">
+                                    <span class="fa fa-pencil-square-o fa-fw"></span>
+                                    Register
+                                </a>
+
+                            </li>
+                        {% endif %}
+                        {% if app.user and is_granted('ROLE_MODERATOR') %}
+                            <li class="dropdown {{
+                                (app.request.get('_route') == 'admin_user'
+                                    or app.request.get('_route') == 'admin_words'
+                                ) ? 'active' }}">
+                                <a href="#"
+                                   class="dropdown-toggle"
+                                   data-toggle="dropdown"
+                                   role="button">
+                                    <span class="fa fa-gears fa-fw"></span>
+                                    Admin
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <li {{ (app.request.get('_route') == 'admin_user') ? 'class="active"' }}>
+                                            <a href="{{ path('admin_users') }}">
+                                                <span class="fa fa-users fa-fw"></span>
+                                                Manage Users
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    <li {{ (app.request.get('_route') == 'admin_words') ? 'class="active"' }}>
+                                        <a href="{{ path('admin_words') }}">
+                                            <span class="fa fa-book fa-fw"></span>
+                                            Manage Words
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                        {% if app.user and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <li class="dropdown {{
+                                (app.request.get('_route') == 'fos_user_change_password')
+                                or (app.request.get('_route') == 'fos_user_profile_show')
+                                or (app.request.get('_route') == 'fos_user_profile_edit')
+                                ? 'active'
+                            }}">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                                    <span class="fa fa-user fa-fw"></span>
+                                    Hello, {{ (app.user.firstName) ? app.user.firstName : app.user.username }}!
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li {{ (app.request.get('_route') == 'fos_user_change_password') ? 'class="active"' }}>
+                                        <a href="{{ path('fos_user_change_password') }}">
+                                            <span class="fa fa-ellipsis-h fa-fw"></span>
+                                            Change Password
+                                        </a>
+                                    </li>
+                                    <li {{ (app.request.get('_route') == 'fos_user_profile_show') ? 'class="active"' }}>
+                                        <a href="{{ path('fos_user_profile_show') }}">
+                                            <span class="fa fa-eye fa-fw"></span>
+                                            View Profile
+                                        </a>
+                                    </li>
+                                    <li {{ (app.request.get('_route') == 'fos_user_profile_edit') ? 'class="active"' }}>
+                                        <a href="{{ path('fos_user_profile_edit') }}">
+                                            <span class="fa fa-pencil-square-o fa-fw"></span>
+                                            Edit Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('fos_user_security_logout') }}">
+                                            <span class="fa fa-sign-out fa-fw"></span>
+                                            Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                        <li class="hidden-lg hidden-md hidden-sm pull-right">
+                            <div class="container">
+                                <p class="navbar-text">
+                                    <span class="fa fa-copyright icon-left"></span>
+                                    {{ "now"|date('Y') }}, Justin Reherman
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    {% for type, messages in app.session.flashBag.all %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ type }} alert-dismissable text-center">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <p>{{ message }}</p>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+        <div class="navbar navbar-inverse navbar-fixed-bottom hidden-xs">
+            <div class="container-fluid">
+                <div class="navbar-text">
+                    <span class="fa fa-copyright icon-left"></span>
+                    {{ "now"|date('Y') }}, Justin Reherman
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                        <li>
+                            <a href="{{ path('admin_users', {'_become': '_exit'}) }}">
+                                <span class="fa fa-sign-out icon-left"></span>
+                                Stop Impersonating {{ app.user.firstName|default(app.user.username) }}
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+        <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"
+        ></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

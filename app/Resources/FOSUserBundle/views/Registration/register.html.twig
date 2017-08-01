@@ -1,0 +1,60 @@
+{% extends 'FOSUserBundle::layout.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% set content_title = 'Register' %}
+
+{% block fos_user_content %}
+    <div class="col-sm-6 col-sm-offset-3">
+        <form action="{{ path('fos_user_registration_register') }}" method="POST">
+            <div class="form-group">
+                <label class="control-label" for="fos_user_registration_form_email">
+                    {{ 'form.email'|trans }}
+                </label>
+                <div class="col-xs-12">
+                    {{ form_widget(
+                    form.email,
+                    {'attr': {'class': 'form-control', 'placeholder': 'Email', 'autofocus': 'autofocus'}}
+                    ) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="fos_user_registration_form_username">
+                    {{ 'form.username'|trans }}
+                </label>
+                <div class="col-xs-12">
+                    {{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder': 'Username'}}) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="fos_user_registration_form_plainPassword_first">
+                    {{ 'form.password'|trans }}
+                </label>
+                <div class="col-xs-12">
+                    {{ form_widget(
+                    form.plainPassword.first,
+                    {'attr': {'class': 'form-control', 'placeholder': 'Password'}}
+                    ) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="fos_user_registration_form_plainPassword_second">
+                    {{ 'form.password_confirmation'|trans }}
+                </label>
+                <div class="col-xs-12">
+                    {{ form_widget(
+                    form.plainPassword.second,
+                    {'attr': {'class': 'form-control', 'placeholder': 'Password'}}
+                    ) }}
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-primary pull-right">
+                    <span class="fa fa-edit icon-left"></span>
+                    {{ 'registration.submit'|trans }}
+                </button>
+            </div>
+            {{ form_rest(form) }}
+        </form>
+    </div>
+{% endblock %}

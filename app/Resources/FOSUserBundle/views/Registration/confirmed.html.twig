@@ -1,0 +1,15 @@
+{% extends "@FOSUser/layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% set content_title = 'Confirmed' %}
+
+{% block fos_user_content %}
+    <div class="col-sm-6 col-sm-offset-3">
+        <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
+
+        {% if targetUrl %}
+            <p><a href="{{ targetUrl }}">Back to whence you came!</a></p>
+        {% endif %}
+    </div>
+{% endblock %}

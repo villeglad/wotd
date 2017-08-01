@@ -1,0 +1,26 @@
+<article class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h2 class="panel-title pull-left">{{ word.date.format('Y-m-d') }}</h2>
+        <a href="{{ path('homepage', { 'date': word.date.format('Y-m-d') }) }}">
+            <span class="fa fa-link pull-right"></span>
+        </a>
+    </div>
+    <div class="panel-body">
+        <div class="jumbotron text-center">
+            <h1>{{ word.word|capitalize }}</h1>
+            <p>{{ word.pronunciation|default }}</p>
+        </div>
+        {% if word.definitions.count %}
+            <ol>
+                {% for definition in word.definitions %}
+                    <li>
+                        <p>
+                            <i>{{ definition.speechPart|default }}</i>:
+                            {{ definition.text }}
+                        </p>
+                    </li>
+                {% endfor %}
+            </ol>
+        {% endif %}
+    </div>
+</article>

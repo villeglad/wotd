@@ -1,0 +1,147 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block _word_definitions_entry_widget %}
+    <div class="panel panel-info js-definition" id="panel-{{ form.vars.id }}">
+        <div class="panel-heading clearfix">
+            <button type="button"
+                    class="close"
+                    data-target="#panel-{{ form.vars.id }}"
+                    data-dismiss="alert"
+                    aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="panel-body">
+            {{ form_widget(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    <article class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">Edit Word</h1>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                {% if not form.vars.valid %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ form_errors(form.word) }}
+                        {{ form_errors(form.date) }}
+                        {{ form_errors(form.pronunciation) }}
+                    </div>
+                {% endif %}
+            </div>
+            <form action="{{ path('admin_word_new', {'word': form.vars.value.id}) }}" method="POST">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label" for="word_word">
+                            Word
+                        </label>
+                        <div class="col-xs-12">
+                            {{ form_widget(form.word) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="word_pronunciation">
+                            Pronunciation
+                        </label>
+                        <div class="col-xs-12">
+                            {{ form_widget(form.pronunciation) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="word_date">
+                            Date
+                        </label>
+                        <div class="col-xs-12">
+                            {{ form_widget(form.date) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label" for="word_definitions">
+                            Definitions
+                        </label>
+                        <div class="col-xs-12">
+                            <div class="well"
+                                 id="js-definitions"
+                                 data-prototype="{{ form_widget(form.definitions.vars.prototype)|e('html_attr') }}">
+                                {% for definition in form.definitions %}
+                                    {{ form_widget(definition) }}
+                                {% endfor %}
+                                {% do form.definitions.setRendered %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button type="button"
+                                    id="js-add-definition"
+                                    class="btn btn-default btn-sm col-xs-4 col-xs-offset-4">
+                                <span class="fa fa-plus icon-left"></span>
+                                Add Definition
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a href="{{ path('admin_words') }}" class="btn btn-danger pull-left">
+                            <span class="fa fa-close icon-left"></span>
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary pull-right">
+                            <span class="fa fa-pencil icon-left"></span>
+                            Save
+                        </button>
+                    </div>
+                </div>
+                {{ form_rest(form)}}
+            </form>
+        </div>
+    </article>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+
+            var $collectionContainer = $('#js-definitions');
+
+            $collectionContainer.data('index', $collectionContainer.find('div.js-definition').length);
+
+            $('#js-add-definition').on('click', function(e) {
+                e.preventDefault();
+
+                addDefinitionForm($collectionContainer);
+            });
+
+            function addDefinitionForm($collectionContainer) {
+                var $prototype = $collectionContainer.data('prototype');
+
+                var $index = $collectionContainer.data('index');
+
+                var $newForm = $prototype.replace(/__name__/g, $index);
+
+                $collectionContainer.data('index', $index + 1);
+
+                $collectionContainer.append($newForm);
+            }
+        });
+    </script>
+{% endblock %}

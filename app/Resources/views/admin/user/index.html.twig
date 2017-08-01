@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <article class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left">Registered Users</h3>
+            <div class="input-group input-group-sm col-md-4 pull-right">
+                <input id="js-search" type="text" class="form-control" placeholder="Filter">
+                <span class="input-group-addon">
+                    <span class="fa fa-search"></span>
+                </span>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Enabled</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                        <tr id="{{ user.id }}" class="item {{ (app.user == user) ? 'info' }}">
+                            <td>{{ user.fullName }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email|length > 20 ? user.email|slice(0, 20) ~ '...' : user.email }}</td>
+                            <td id="enable-{{ user.id }}">{{ (user.enabled) ? 'Yes' : 'No' }}</td>
+                            <td>{{ user.lastLogin|date('Y-m-d') }}</td>
+                            <td>
+                                {% if app.user != user %}
+                                    <button type="button"
+                                            class="btn {{
+                                            (user.enabled) ? 'btn-warning' : 'btn-success'
+                                            }} btn-xs toggle" data-user-id="{{ user.id }}">
+                                        {{ (user.enabled) ? 'Disable' : 'Enable' }}
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-danger btn-xs delete"
+                                            data-user-id="{{ user.id }}">
+                                        Delete
+                                    </button>
+                                    {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}
+                                        <a href="{{ path('homepage', {'_become':  user.username }) }}"
+                                           class="btn btn-info btn-xs">
+                                            Impersonate
+                                        </a>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{{ path('fos_user_profile_edit') }}">
+                                        <button type="button" class="btn btn-info btn-xs">Edit</button>
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                No Registered Users
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </article>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/filter.js') }}"></script>
+    <script src="{{ asset('js/bootbox.min.js') }}"></script>
+    <script>
+        {#
+            Ordinarily, I'd hate to see this here...
+            But in this case, I want to take advantage of twig's "path" function.
+            Plus, this bit of code won't be re-used. If it's needed later on,
+            it'll need to be re-worked.
+        #}
+        $('.delete').click(function() {
+            var id = $(this).attr('data-user-id');
+
+            bootbox.confirm(
+                '<p>Are you sure you wish to delete this user?</p>',
+                function(result) {
+                    var url = '{{ path('admin_user_delete', { 'user': 0 }) }}'.replace('0', id);
+
+                    if (result) {
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            success: function() {
+                                document.getElementById(id).style.display = 'none';
+                            },
+                            error: function(error) {
+                                bootbox.alert(
+                                    '<p>' +
+                                    'An error occurred while deleting the user.' +
+                                    ' Please refresh the page and try again.' +
+                                    '</p>'
+                                );
+                            }
+                        });
+                    }
+                }
+            );
+        });
+
+        $('.toggle').click(function() {
+            var id = $(this).attr('data-user-id');
+
+            var url = '{{ path('admin_user_toggle', { 'user': 0 }) }}'.replace('0', id);
+
+            var button = $(this);
+            var enableField = $(document.getElementById('enable-'+id));
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function() {
+                    if (button.hasClass('btn-warning')) {
+                        button.removeClass('btn-warning').addClass('btn-success').text('Enable');
+                        enableField.text('No');
+                    } else if (button.hasClass('btn-success')) {
+                        button.removeClass('btn-success').addClass('btn-warning').text('Disable');
+                        enableField.text('Yes');
+                    }
+                }
+            })
+        });
+    </script>
+{% endblock %}

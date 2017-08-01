@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <article class="panel panel-default">
+        <div class="panel-heading">
+            <h1 class="panel-title">{{ content_title | default('[[ placeholder ]]') }}</h1>
+        </div>
+        <div class="panel-body">
+            {% block fos_user_content %}{% endblock %}
+        </div>
+    </article>
+{% endblock %}

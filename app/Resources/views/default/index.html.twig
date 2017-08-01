@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-xs-12">
+            {% include 'include/_word.html.twig' with { 'word': word } %}
+        </div>
+    </div>
+    {#
+    TODO: Uncomment this when the feature is implemented
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <button class="btn btn-primary">View Previous Words</button>
+        </div>
+    </div>
+    #}
+{% endblock %}
+

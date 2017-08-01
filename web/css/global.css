@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+body {
+    padding-bottom: 80px;
+    font-family: "Titillium Web", sans-serif;
+}
+
+.navbar-brand {
+    font-size: 28px;
+}
+
+.navbar-impersonate, .navbar-impersonate .navbar-brand {
+    color: #FFFFFF;
+    background-color: #CC3333;
+}
+
+.navbar-impersonate .navbar-nav > li > a {
+    color: #FFFFFF !important;
+}
+
+.panel-searchable .panel-title {
+    margin-top: 5px;
+}
+
+.content {
+    margin-top: 50px;
+}
+
+.form-group input {
+    margin-bottom: 15px;
+}
+
+.bottom-15 {
+    margin-bottom: 15px;
+}
+
+.icon-left {
+    padding-right: 6px;
+}
+
+.icon-right {
+    padding-left: 6px;
+}
+

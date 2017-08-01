@@ -1,0 +1,16 @@
+{% extends '@FOSUser/layout.html.twig' %}
+
+{% set content_title = 'Check Your Email' %}
+
+{% block fos_user_content %}
+    <div class="col-sm-8 col-sm-offset-2">
+        <p>
+            An email has been sent. It contains a link you must click to reset your password.
+        </p>
+
+        <p>
+            Note: You can only request a password reset once in a {{ tokenLifetime }} period. If you don't get an email
+            check your spam folder or try again.
+        </p>
+    </div>
+{% endblock %}

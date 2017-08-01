@@ -1,0 +1,33 @@
+{% extends '@FOSUser/layout.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% set content_title = 'Password Reset Request' %}
+
+{% block fos_user_content %}
+    <div class="col-sm-6 col-sm-offset-3">
+        <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+            <div class="form-group">
+                <label class="control-label" for="username">
+                    {{ 'resetting.request.username'|trans }}
+                </label>
+                <div class="col-xs-12">
+                    <input
+                        class="form-control"
+                        type="text"
+                        id="username"
+                        name="username"
+                        required="required"
+                        placeholder="Username/Email"
+                    />
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-primary pull-right">
+                    {{ 'resetting.request.submit'|trans }}
+                </button>
+            </div>
+            <div class="clearfix"></div>
+        </form>
+    </div>
+{% endblock %}
