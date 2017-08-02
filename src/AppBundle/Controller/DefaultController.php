@@ -59,8 +59,6 @@ class DefaultController extends Controller
             $word = $this->getDefaultWord();
         }
 
-        // If the date is
-
         return $this->render('default/index.html.twig', ['word' => $word]);
     }
 
