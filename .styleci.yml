@@ -6,5 +6,5 @@ finder:
   name:
     - "*.php"
   path:
-    - "src",
+    - "src"
     - "tests"
