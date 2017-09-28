@@ -46,5 +46,4 @@ class DefinitionType extends AbstractType
             'data_class' => Definition::class,
         ]);
     }
-
 }

@@ -52,5 +52,4 @@ class LoadUsersData implements FixtureInterface, ContainerAwareInterface
         // But I feel like it's more evident if we do it explicitly.
         $objectManager->flush();
     }
-
 }
