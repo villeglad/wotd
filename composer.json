@@ -1,6 +1,6 @@
 {
-    "name": "jkyle/wotd",
-    "license": "proprietary",
+    "name": "wackyMole/wotd",
+    "license": "MIT",
     "type": "project",
     "autoload": {
         "psr-4": {
