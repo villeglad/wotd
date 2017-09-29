@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "75c637648e92b52d25d32af49d281ceb",
+    "content-hash": "5c3d454d2bda0ab7ea039891b572cc1f",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -898,12 +898,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "3aff53eedf9b1c2cdf2d69b160cd0b5ee195dffa"
+                "reference": "315f837576d66f40e5e002d0caacfe1cfb5a58ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/3aff53eedf9b1c2cdf2d69b160cd0b5ee195dffa",
-                "reference": "3aff53eedf9b1c2cdf2d69b160cd0b5ee195dffa",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/315f837576d66f40e5e002d0caacfe1cfb5a58ba",
+                "reference": "315f837576d66f40e5e002d0caacfe1cfb5a58ba",
                 "shasum": ""
             },
             "require": {
@@ -967,7 +967,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2017-07-28 16:47:18"
+            "time": "2017-08-11T10:26:53+00:00"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -2637,7 +2637,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.5.9",
+        "php": "~7.1",
         "ext-pdo_mysql": "*",
         "ext-curl": "*"
     },
