@@ -33,3 +33,27 @@ bin/console doctrine:fixtures:load
 bin/console server:run
 ```
 
+### Automation!
+
+#### Dev Mode
+
+```
+./setup.sh -d
+```
+#### Test Mode
+
+```
+./setup.sh -t
+```
+
+#### Production Mode
+
+```
+./setup.sh -p
+```
+
+#### Help Mode
+
+```
+./setup.sh -h
+```
