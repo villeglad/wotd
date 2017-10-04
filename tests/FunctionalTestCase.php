@@ -21,7 +21,12 @@ class FunctionalTestCase extends WebTestCase
         $this->schemaTool = $this->createSchemaTool();
     }
 
-    public function setContainer()
+    protected function assertResponseOk()
+    {
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+    }
+
+    private function setContainer()
     {
         if (!isset($this->client)) {
             $this->client = static::createClient();
@@ -38,10 +43,5 @@ class FunctionalTestCase extends WebTestCase
         $schemaTool->createSchema($this->entityManager->getMetadataFactory()->getAllMetadata());
 
         return $schemaTool;
-    }
-
-    public function assertResponseOk()
-    {
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 }
