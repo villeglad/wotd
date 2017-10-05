@@ -16,7 +16,7 @@ class FunctionalTestCase extends WebTestCase
     {
         parent::setUp();
         $this->client = static::createClient();
-        $this->setContainer();
+        $this->container = $this->client->getContainer();
         $this->entityManager = $this->container->get('doctrine.orm.entity_manager');
         $this->schemaTool = $this->createSchemaTool();
     }
@@ -24,16 +24,6 @@ class FunctionalTestCase extends WebTestCase
     protected function assertResponseOk()
     {
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-    }
-
-    private function setContainer()
-    {
-        if (!isset($this->client)) {
-            $this->client = static::createClient();
-        }
-        if (!isset($this->container)) {
-            $this->container = static::$kernel->getContainer();
-        }
     }
 
     private function createSchemaTool()
